@@ -2,28 +2,41 @@ import React, { useCallback, useState, useEffect } from 'react'
 
 const App = () => {
 
-  const [ num, setNum]= useState(8);
-  const [ includeNumbers, setIncludedNumbers] = useState(false);
-  const [ includeChar, setIncludeChar] = useState(false);
+  const [num, setNum] = useState(8);
+  const [includeNumbers, setIncludedNumbers] = useState(false);
+  const [includeChar, setIncludeChar] = useState(false);
   const [Password, setPassword] = useState('');
+  const [copyPassword, setCopyPassword] = useState(false)
 
-  const generatePassword = useCallback(()=>{
-    let pass= "";
+  let text = "✔✔"
+
+
+  const handleCopyPassword = () => {
+    navigator.clipboard.writeText(Password);
+    setCopyPassword(true);
+  };
+
+  const generatePassword = useCallback(() => {
+    let pass = "";
     let str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-    if(includeNumbers) str += "1234567890";
-    if(includeChar) str += "!@#$%^&*()~{}?";
-    for( let i = 1; i<= num; i++){
-      let index = Math.floor(Math.random() * str.length );
+    if (includeNumbers) str += "1234567890";
+    if (includeChar) str += "!@#$%^&*()~{}?";
+    for (let i = 1; i <= num; i++) {
+      let index = Math.floor(Math.random() * str.length);
       pass += str.charAt(index)
-       
-    } 
+
+    }
     setPassword(pass);
-    
-  },[num, includeNumbers, includeChar])
-  
-  useEffect(()=>{
+
+  }, [num, includeNumbers, includeChar])
+
+  useEffect(() => {
     generatePassword();
-  },[num, includeNumbers, includeChar])
+  }, [num, includeNumbers, includeChar])
+
+  useEffect(() => {
+    setCopyPassword(false);
+  }, [num, includeNumbers, includeChar]);
 
 
   return (
@@ -37,16 +50,16 @@ const App = () => {
           value={Password}
           className="w-full p-2 outline-0 bg-white text-black"
         />
-        <button  className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 cursor-pointer" onClick={()=>{navigator.clipboard.writeText(Password)}}>
-          Copy
+        <button className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 cursor-pointer" onClick={handleCopyPassword}>
+          {copyPassword ? "✔✔" : "copy"}
         </button>
       </div>
       <div className=' flex items-center gap-x-1 my-3 '>
-        <input type="range" name="" id="" min={8} max={50} className="cursor-pointer" value={num} onChange={(e)=>{setNum(e.target.value)}} />
+        <input type="range" name="" id="" min={8} max={50} className="cursor-pointer" value={num} onChange={(e) => { setNum(e.target.value) }} />
         <label >Length : ( {num} )</label>
-        <input type="checkbox" checked = {includeNumbers} onChange={()=>{setIncludedNumbers(prev => !prev)}}/>
+        <input type="checkbox" checked={includeNumbers} onChange={() => { setIncludedNumbers(prev => !prev) }} />
         <label > include Number</label>
-        <input type="checkbox" checked = {includeChar} onChange={()=>{setIncludeChar(prev => !prev)}}/>
+        <input type="checkbox" checked={includeChar} onChange={() => { setIncludeChar(prev => !prev) }} />
         <label > include Characters</label>
       </div>
     </div>
