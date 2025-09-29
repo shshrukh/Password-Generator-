@@ -32,7 +32,7 @@ const App = () => {
       <div className="flex rounded-md overflow-hidden border">
         <input
           type="text"
-          placeholder="Password"
+          placeholder="Passwordd"
           readOnly
           value={Password}
           className="w-full p-2 outline-0 bg-white text-black"
