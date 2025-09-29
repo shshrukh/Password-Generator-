@@ -13,17 +13,17 @@ const App = () => {
     if(includeNumbers) str += "1234567890";
     if(includeChar) str += "!@#$%^&*()~{}?";
     for( let i = 1; i<= num; i++){
-      let index = Math.floor(Math.random() * str.length + 1);
+      let index = Math.floor(Math.random() * str.length );
       pass += str.charAt(index)
        
     } 
     setPassword(pass);
     
-  },[num, includeNumbers, includeChar, setPassword])
+  },[num, includeNumbers, includeChar])
   
   useEffect(()=>{
     generatePassword();
-  },[num, includeNumbers, includeChar, setPassword])
+  },[num, includeNumbers, includeChar])
 
 
   return (
@@ -32,23 +32,21 @@ const App = () => {
       <div className="flex rounded-md overflow-hidden border">
         <input
           type="text"
-          placeholder="Passwordd"
+          placeholder="Password"
           readOnly
           value={Password}
           className="w-full p-2 outline-0 bg-white text-black"
         />
-        <button
-          className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 cursor-pointer"
-        >
+        <button  className="bg-blue-600 text-white px-4 py-2 hover:bg-blue-700 cursor-pointer" onClick={()=>{navigator.clipboard.writeText(Password)}}>
           Copy
         </button>
       </div>
       <div className=' flex items-center gap-x-1 my-3 '>
         <input type="range" name="" id="" min={8} max={50} className="cursor-pointer" value={num} onChange={(e)=>{setNum(e.target.value)}} />
         <label >Length : ( {num} )</label>
-        <input type="checkbox" defaultChecked = {includeNumbers} onChange={()=>{setIncludedNumbers(prev => !prev)}}/>
+        <input type="checkbox" checked = {includeNumbers} onChange={()=>{setIncludedNumbers(prev => !prev)}}/>
         <label > include Number</label>
-        <input type="checkbox" defaultChecked = {includeChar} onChange={()=>{setIncludeChar(prev => !prev)}}/>
+        <input type="checkbox" checked = {includeChar} onChange={()=>{setIncludeChar(prev => !prev)}}/>
         <label > include Characters</label>
       </div>
     </div>
